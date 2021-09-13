@@ -1,0 +1,37 @@
+{
+  "name": "monitor-opentelemetry-example",
+  "version": "1.0.0",
+  "description": "Monitor OpenTelemetry example",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "server": "node -r dotenv/config out/server.js",
+    "client": "node -r dotenv/config out/client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hectorhdzg/monitor-opentelemetry-example.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hectorhdzg/monitor-opentelemetry-example/issues"
+  },
+  "homepage": "https://github.com/hectorhdzg/monitor-opentelemetry-example#readme",
+  "dependencies": {
+    "@azure/event-hubs": "^5.6.1-alpha.20210910.3",
+    "@azure/identity": "^1.5.2",
+    "@azure/monitor-opentelemetry-exporter": "^1.0.0-beta.5",
+    "@opentelemetry/api": "^1.0.3",
+    "@opentelemetry/instrumentation": "^0.24.0",
+    "@opentelemetry/instrumentation-http": "^0.24.0",
+    "@opentelemetry/instrumentation-mysql": "^0.24.0",
+    "@opentelemetry/node": "^0.24.0",
+    "@opentelemetry/tracing": "^0.24.0",
+    "@types/node": "^16.9.1",
+    "dotenv": "^10.0.0",
+    "mysql": "^2.18.1",
+    "typescript": "^4.4.2"
+  }
+}
