@@ -4,7 +4,7 @@
 import * as api from "@opentelemetry/api";
 import { EventHubProducerClient } from "@azure/event-hubs";
 import { DefaultAzureCredential } from "@azure/identity";
-import * as mysql from "mysql";
+
 
 import { getOpenTelemetryTracer } from "./tracer";
 
@@ -16,8 +16,9 @@ dotenv.config();
  *  OPEN TELEMETRY SETUP
  **********************************************************************/
 const tracer = getOpenTelemetryTracer();
-// Open Telemetry setup need to happen before http library is loaded
+// Open Telemetry setup need to happen before instrumented libraries are loaded
 import * as http from "http";
+import * as mysql from "mysql";
 
 /*********************************************************************
  *  AZURE EVENTHUB SETUP
@@ -47,6 +48,12 @@ const connection = mysql.createConnection({
   user: mysqlUser,
   password: mysqlPassword,
   database: mysqlDatabase,
+});
+
+connection.connect((err)=>{
+  if(err){
+    console.log("Failed to connect to DB, err:" + err);
+  }
 });
 
 function handleConnectionQuery(response: any) {
