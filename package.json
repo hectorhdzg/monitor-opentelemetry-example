@@ -22,8 +22,9 @@
   "dependencies": {
     "@azure/event-hubs": "^5.6.1-alpha.20210910.3",
     "@azure/identity": "^1.5.2",
-    "@azure/monitor-opentelemetry-exporter": "^1.0.0-beta.5",
+    "@azure/monitor-opentelemetry-exporter": "file:azure-monitor-opentelemetry-exporter-1.0.0-beta.5 (3).tgz",
     "@opentelemetry/api": "^1.0.3",
+    "@opentelemetry/exporter-jaeger": "^0.24.0",
     "@opentelemetry/instrumentation": "^0.24.0",
     "@opentelemetry/instrumentation-http": "^0.24.0",
     "@opentelemetry/instrumentation-mysql": "^0.24.0",
