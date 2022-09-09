@@ -3,11 +3,16 @@
 
 import api from "@opentelemetry/api";
 
-import { getOpenTelemetryTracer } from "./tracer";
+import { getOpenTelemetryTracer, initializeApplicationInsights } from "./tracer";
 
 // Load the .env file if it exists
 import * as dotenv from "dotenv";
 dotenv.config();
+
+/*********************************************************************
+ * APPLICATION INSIGHTS SETUP
+ **********************************************************************/
+initializeApplicationInsights();
 
 /*********************************************************************
  *  OPEN TELEMETRY SETUP

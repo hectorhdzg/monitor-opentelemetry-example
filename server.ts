@@ -5,12 +5,16 @@ import * as api from "@opentelemetry/api";
 import { EventHubProducerClient } from "@azure/event-hubs";
 import { DefaultAzureCredential } from "@azure/identity";
 
-
-import { getOpenTelemetryTracer } from "./tracer";
+import { getOpenTelemetryTracer, initializeApplicationInsights } from "./tracer";
 
 // Load the .env file if it exists
 import * as dotenv from "dotenv";
 dotenv.config();
+
+/*********************************************************************
+ * APPLICATION INSIGHTS SETUP
+ **********************************************************************/
+initializeApplicationInsights();
 
 /*********************************************************************
  *  OPEN TELEMETRY SETUP
@@ -18,7 +22,6 @@ dotenv.config();
 const tracer = getOpenTelemetryTracer();
 // Open Telemetry setup need to happen before instrumented libraries are loaded
 import * as http from "http";
-import * as mysql from "mysql";
 
 /*********************************************************************
  *  AZURE EVENTHUB SETUP
@@ -32,40 +35,6 @@ const client = new EventHubProducerClient(eventHubHost, eventHubName, credential
 async function handleEventHub(response: any) {
   const partitionIds = await client.getPartitionIds();
   response.end(JSON.stringify(partitionIds));
-}
-
-/*********************************************************************
- *  MYSQL SETUP
- **********************************************************************/
-/** Connect to MySQL DB. */
-const mysqlHost = process.env["MYSQL_HOST"] || "localhost";
-const mysqlUser = process.env["MYSQL_USER"] || "root";
-const mysqlPassword = process.env["MYSQL_PASSWORD"] || "secret";
-const mysqlDatabase = process.env["MYSQL_DATABASE"] || "my_db";
-
-const connection = mysql.createConnection({
-  host: mysqlHost,
-  user: mysqlUser,
-  password: mysqlPassword,
-  database: mysqlDatabase,
-});
-
-connection.connect((err)=>{
-  if(err){
-    console.log("Failed to connect to DB, err:" + err);
-  }
-});
-
-function handleConnectionQuery(response: any) {
-  const query = 'SELECT 1 + 1 as solution';
-  connection.query(query, (err, results, _fields) => {
-    if (err) {
-      console.log('Error code:', err.code);
-      response.end(err.message);
-    } else {
-      response.end(`${query}: ${results[0].solution}`);
-    }
-  });
 }
 
 /*********************************************************************
@@ -106,9 +75,6 @@ function handleRequest(request: any, response: any) {
     }
     else if (request.url == '/eventhub') {
       handleEventHub(response);
-    }
-    else if (request.url == '/mysql') {
-      handleConnectionQuery(response);
     }
     span.end();
   });
